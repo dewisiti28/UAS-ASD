@@ -12,11 +12,11 @@ Dibuat untuk memenuhi proyek akhir mata kuliah Algoritma dan Struktur Data :
 Pada zaman dahulu, ada negara damai dan makmur bernama Utopia. Legolas, seorang tukang berlian, bisa bebas bepergian dari kota ke kota untuk menjual berlian yang ia desain ke semua orang. Semua kota dapat dengan mudah dikunjungi oleh Legolas melalui jalan-jalan yang menghubungkan setiap kota di Utopia. Dia biasa menyusuri setiap kota di Utopia setidaknya satu kali untuk menawarkan berlian buatannya. Namun, semuanya berubah setelah perang melanda Utopia. Terbentuk persekutuan di Utopia. Penduduk tidak lagi bebas untuk bepergian mengunjungi kota-kota yang ada di sana. Utopia menjadi negara yang terbagi ke dalam persekutuan/aliansi berwarna. Setiap kota tergabung dalam minimal satu dan maksimal dua aliansi (warna). Untuk masuk ke dalam sebuah kota. penduduk perlu menunjukkan tiket yang sesuai dengan salah satu warna aliansi kota tersebut pada petugas penjaga perbatasak. Saat keluar, dia akan menerima tiket lain (warna yang berbeda-jika masuk ke aliansi ganda, tiket dengan warna yang sama jika kota tersebut hanya tergabung ke dalam satu aliansi saja). Sebagai penduduk senior dan disegani di Utopia. Legolas diperbolehkan memilih tiket dan kota yang ingin dia masuki sebagai kota pertama saat ia hendak akan berjualan keliling Utopia. Namun setelah itu dia harus mematuhi aturan aliansi. la ingin melakukan rutinitas yang sama seperti dulu, mengunjungi setiap kota tepat satu kali di Utopia. Kini tidak mudah baginya untuk melakukan hal tersebut, meski ia bisa memilih dari mana akan memulai perjalanan bisnisnya.
 
 Contoh :
-Misal, ada 4 kota (0-3).
-Kota 0: aliansi merah & hijau.
-Kota 1: aliansi merah.
-Kota 2: aliansi hijau & kuning.
-Kota 3: aliansi biru & merah.
+- Misal, ada 4 kota (0-3).
+- Kota 0: aliansi merah & hijau.
+- Kota 1: aliansi merah.
+- Kota 2: aliansi hijau & kuning.
+- Kota 3: aliansi biru & merah.
 
 - jika Legolas mulai di kota 0 dengan tiket merah, dia keluar kota O dengan membawa tiket
 - Sekarang hanya kota 2 yang bisa dikunjungi (dan keluar dari kota 2 dengan tiker kuning)
