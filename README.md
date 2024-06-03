@@ -44,7 +44,7 @@ INPUT :
 - Input diakhiri dua angka nol (0 0).
 
   OUTPUT :
-  Bilangan -1 jika tidak mungkin. atau nomor kota awal yang bisa dipilih legolas(pilih yng terkecil jika ada bbeberapa jawaban).
+- Bilangan -1 jika tidak mungkin. atau nomor kota awal yang bisa dipilih legolas(pilih yng terkecil jika ada bbeberapa jawaban).
 
   |Contoh input|Contoh output|
   |---------|---------|
