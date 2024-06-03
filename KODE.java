@@ -15,6 +15,7 @@ public class uasSem2 {
             }
             cityAlliances = new HashMap<>();
         }
+
         void addAlliance(int color, List<Integer> cities) {
             for (int city : cities) {
                 cityAlliances.putIfAbsent(city, new HashSet<>());
@@ -39,7 +40,8 @@ public class uasSem2 {
             }
             return false;
         }
-private int dfs(int city, Set<Integer> visited, int currentTicket) {
+
+        private int dfs(int city, Set<Integer> visited, int currentTicket) {
             visited.add(city);
             int count = 1;
 
@@ -56,8 +58,11 @@ private int dfs(int city, Set<Integer> visited, int currentTicket) {
             return count;
         }
     }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        StringBuilder output = new StringBuilder();
+
         while (true) {
             int numCities = scanner.nextInt();
             int numAlliances = scanner.nextInt();
@@ -82,8 +87,10 @@ private int dfs(int city, Set<Integer> visited, int currentTicket) {
                 }
             }
 
-            System.out.println(startCity);
+            output.append(startCity).append("\n");
         }
+
+        System.out.print(output);
         scanner.close();
     }
 }
