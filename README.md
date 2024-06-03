@@ -18,7 +18,8 @@ Contoh :
 - Kota 2: aliansi hijau & kuning.
 - Kota 3: aliansi biru & merah.
 
-- jika Legolas mulai di kota 0 dengan tiket merah, dia keluar kota O dengan membawa tiket
+jika :
+- Legolas mulai di kota 0 dengan tiket merah, dia keluar kota 0 dengan membawa tiket
 - Sekarang hanya kota 2 yang bisa dikunjungi (dan keluar dari kota 2 dengan tiker kuning)
 - Keluar kota 2, dan terima tiket kuning dan tidak biss ke mana-mana lagi
 - Jika Legolas mulai di kota dengan tiket hijnu, dia keluar kota 0 dengan tiket merah.
