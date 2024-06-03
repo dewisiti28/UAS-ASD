@@ -39,4 +39,20 @@ public class uasSem2 {
             }
             return false;
         }
+private int dfs(int city, Set<Integer> visited, int currentTicket) {
+            visited.add(city);
+            int count = 1;
 
+            for (int neighbor : adjList.get(city)) {
+                if (!visited.contains(neighbor)) {
+                    Set<Integer> neighborTickets = cityAlliances.get(neighbor);
+                    for (int ticket : neighborTickets) {
+                        if (ticket != currentTicket) {
+                            count += dfs(neighbor, visited, ticket);
+                        }
+                    }
+                }
+            }
+            return count;
+        }
+    } 
