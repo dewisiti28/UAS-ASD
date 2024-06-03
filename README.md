@@ -37,7 +37,7 @@ Tapi, ternyata, memungkinkan untuk mengunjungi semua kota jika Legolas mulai dar
 Seperti yang Anda lihat, sangat sulit bagi Legolas si tukang berlian untuk menyelesaikan tugasnya. Oleh sebab itu, dia meminta Anda membantunya. Dia ingin tahu kota mana yangharus dia pilih untuk memulai perjalanan, sehingga dia dapat melakukan perjalanan ke semuakota di Utopia tepat satu kali.
 Bisakah kamu membantu Legolas?
 
-INPUT :
+  INPUT :
 - Input terdiri dari beragam kasus. Setiap kasus terdiri dari data masukan sebagai berikut:
    1. Baris pertama: jumlah kota (N. 1≤N≤ 500) dan aliansi (C. 1≤ C≤ 100).
    2. Baris selanjutnya (sebanyak C): jumlah kota (K) dalam aliansi dan daftar kotayang tergabung (dipisahkan spasi, bernomor 0 sampai N-1). Setiap kota muncul minimal sekali, maksimal dua kali, dan tidak ada yang terulang dalam aliansi yang sama.
