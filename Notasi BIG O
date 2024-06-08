@@ -31,3 +31,16 @@ DEFINE class Tugas
             PRINT 'kota'
         
         CLOSE 'scanner'
+
+    METHOD 'cariKotaAwal' (int n, int c, List 'daftarAliansi') RETURNS int
+        CREATE Map 'petaAliansiKota'
+        CREATE Map 'graf'
+        
+        FOR each 'indeksAliansi' in 'daftarAliansi'
+            GET 'aliansi' from 'daftarAliansi' at 'indeksAliansi'
+            
+            FOR i = 0 to size of 'aliansi' - 1
+                FOR j = i + 1 to size of 'aliansi' - 1
+                    CREATE keys 'kunci1' and 'kunci2'
+                    ADD connections to 'graf' for both 'kunci1' and 'kunci2'
+        
