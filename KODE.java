@@ -1,61 +1,61 @@
 import java.util.*;
 
-public class uasSem2 {
+public class UAS {
 
-    static class Graph {
-        int numCities;
-        List<Set<Integer>> adjList;
-        Map<Integer, Set<Integer>> cityAlliances;
+    static class Graf {
+        int jumlahKota;
+        List<Set<Integer>> daftarTetangga;
+        Map<Integer, Set<Integer>> aliansiKota;
 
-        Graph(int numCities) {
-            this.numCities = numCities;
-            adjList = new ArrayList<>(numCities);
-            for (int i = 0; i < numCities; i++) {
-                adjList.add(new HashSet<>());
+        Graf(int jumlahKota) {
+            this.jumlahKota = jumlahKota;
+            daftarTetangga = new ArrayList<>(jumlahKota);
+            for (int i = 0; i < jumlahKota; i++) {
+                daftarTetangga.add(new HashSet<>());
             }
-            cityAlliances = new HashMap<>();
+            aliansiKota = new HashMap<>();
         }
 
-        void addAlliance(int color, List<Integer> cities) {
-            for (int city : cities) {
-                cityAlliances.putIfAbsent(city, new HashSet<>());
-                cityAlliances.get(city).add(color);
+        void tambahAliansi(int warna, List<Integer> kotaKota) {
+            for (int kota : kotaKota) {
+                aliansiKota.putIfAbsent(kota, new HashSet<>());
+                aliansiKota.get(kota).add(warna);
             }
-            for (int city : cities) {
-                for (int otherCity : cities) {
-                    if (city != otherCity) {
-                        adjList.get(city).add(otherCity);
+            for (int kota : kotaKota) {
+                for (int kotaLain : kotaKota) {
+                    if (kota != kotaLain) {
+                        daftarTetangga.get(kota).add(kotaLain);
                     }
                 }
             }
         }
 
-        boolean canVisitAllCitiesFrom(int startCity) {
-            Set<Integer> initialTickets = cityAlliances.get(startCity);
-            for (int ticket : initialTickets) {
-                Set<Integer> visited = new HashSet<>();
-                if (dfs(startCity, visited, ticket) == numCities) {
+        boolean bisaKunjungiSemuaKotaDari(int kotaMulai) {
+            Set<Integer> tiketAwal = aliansiKota.get(kotaMulai);
+            for (int tiket : tiketAwal) {
+                Set<Integer> dikunjungi = new HashSet<>();
+                if (dfs(kotaMulai, dikunjungi, tiket) == jumlahKota) {
                     return true;
                 }
             }
             return false;
         }
 
-        private int dfs(int city, Set<Integer> visited, int currentTicket) {
-            visited.add(city);
-            int count = 1;
+        private int dfs(int kota, Set<Integer> dikunjungi, int tiketSaatIni) {
+            dikunjungi.add(kota);
+            int hitungan = 1;
 
-            for (int neighbor : adjList.get(city)) {
-                if (!visited.contains(neighbor)) {
-                    Set<Integer> neighborTickets = cityAlliances.get(neighbor);
-                    for (int ticket : neighborTickets) {
-                        if (ticket != currentTicket) {
-                            count += dfs(neighbor, visited, ticket);
+            for (int tetangga : daftarTetangga.get(kota)) {
+                if (!dikunjungi.contains(tetangga)) {
+                    Set<Integer> tiketTetangga = aliansiKota.get(tetangga);
+                    for (int tiket : tiketTetangga) {
+                        if (tiket != tiketSaatIni) {
+                            hitungan += dfs(tetangga, dikunjungi, tiket);
                         }
                     }
                 }
             }
-            return count;
+            return hitungan;
         }
     }
 
@@ -64,30 +64,30 @@ public class uasSem2 {
         StringBuilder output = new StringBuilder();
 
         while (true) {
-            int numCities = scanner.nextInt();
-            int numAlliances = scanner.nextInt();
-            if (numCities == 0 && numAlliances == 0) break;
+            int jumlahKota = scanner.nextInt();
+            int jumlahAliansi = scanner.nextInt();
+            if (jumlahKota == 0 && jumlahAliansi == 0) break;
 
-            Graph graph = new Graph(numCities);
+            Graf graf = new Graf(jumlahKota);
 
-            for (int i = 0; i < numAlliances; i++) {
-                int numCitiesInAlliance = scanner.nextInt();
-                List<Integer> cities = new ArrayList<>();
-                for (int j = 0; j < numCitiesInAlliance; j++) {
-                    cities.add(scanner.nextInt());
+            for (int i = 0; i < jumlahAliansi; i++) {
+                int kotaDalamAliansi = scanner.nextInt();
+                List<Integer> kotaKota = new ArrayList<>();
+                for (int j = 0; j < kotaDalamAliansi; j++) {
+                    kotaKota.add(scanner.nextInt());
                 }
-                graph.addAlliance(i, cities);
+                graf.tambahAliansi(i, kotaKota);
             }
 
-            int startCity = -1;
-            for (int i = 0; i < numCities; i++) {
-                if (graph.canVisitAllCitiesFrom(i)) {
-                    startCity = i;
+            int kotaMulai = -1;
+            for (int i = 0; i < jumlahKota; i++) {
+                if (graf.bisaKunjungiSemuaKotaDari(i)) {
+                    kotaMulai = i;
                     break;
                 }
             }
 
-            output.append(startCity).append("\n");
+            output.append(kotaMulai).append("\n");
         }
 
         System.out.print(output);
