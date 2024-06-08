@@ -32,3 +32,28 @@ public class UAS {
         }
         scanner.close();
     }
+private static int cariKotaAwal(int n, int c, List<List<Integer>> daftarAliansi) {
+        Map<Integer, List<Integer>> petaAliansiKota = new HashMap<>();
+        Map<String, List<String>> graf = new HashMap<>();
+        
+        for (int indeksAliansi = 0; indeksAliansi < daftarAliansi.size(); indeksAliansi++) {
+            List<Integer> aliansi = daftarAliansi.get(indeksAliansi);
+            for (int i = 0; i < aliansi.size(); i++) {
+                for (int j = i + 1; j < aliansi.size(); j++) {
+                    String kunci1 = aliansi.get(i) + "-" + indeksAliansi;
+                    String kunci2 = aliansi.get(j) + "-" + indeksAliansi;
+                    graf.putIfAbsent(kunci1, new ArrayList<>());
+                    graf.putIfAbsent(kunci2, new ArrayList<>());
+                    graf.get(kunci1).add(kunci2);
+                    graf.get(kunci2).add(kunci1);
+                }
+            }
+        }
+        
+        for (int indeksAliansi = 0; indeksAliansi < daftarAliansi.size(); indeksAliansi++) {
+            List<Integer> aliansi = daftarAliansi.get(indeksAliansi);
+            for (int kota : aliansi) {
+                petaAliansiKota.putIfAbsent(kota, new ArrayList<>());
+                petaAliansiKota.get(kota).add(indeksAliansi);
+            }
+        }
