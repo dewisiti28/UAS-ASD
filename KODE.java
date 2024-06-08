@@ -82,3 +82,41 @@ private static int cariKotaAwal(int n, int c, List<List<Integer>> daftarAliansi)
                     if (sudahDikunjungi.size() == n) {
                         return true;
                     }
+
+                List<Integer> aliansiSelanjutnya = petaAliansiKota.getOrDefault(kotaSekarang, new ArrayList<>());
+            for (int aliansi : aliansiSelanjutnya) {
+                if (aliansi != aliansiSekarang || aliansiSelanjutnya.size() == 1) {
+                    String kunci = kotaSekarang + "-" + aliansi;
+                    List<String> tetangga = graf.getOrDefault(kunci, new ArrayList<>());
+                    for (String tetanggaStr : tetangga) {
+                        int kotaTetangga = Integer.parseInt(tetanggaStr.split("-")[0]);
+                        int aliansiTetangga = Integer.parseInt(tetanggaStr.split("-")[1]);
+                        if (!sudahDikunjungi.contains(kotaTetangga)) {
+                            Set<Integer> dikunjungiBaru = new HashSet<>(sudahDikunjungi);
+                            dikunjungiBaru.add(kotaTetangga);
+                            List<Integer> jalurBaru = new ArrayList<>(jalur);
+                            jalurBaru.add(kotaTetangga);
+                            antrian.offer(new Node(kotaTetangga, aliansiTetangga, dikunjungiBaru, jalurBaru));
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    static class Node {
+        int kota;
+        int aliansi;
+        Set<Integer> dikunjungi;
+        List<Integer> jalur;
+
+        Node(int kota, int aliansi, Set<Integer> dikunjungi, List<Integer> jalur) {
+            this.kota = kota;
+            this.aliansi = aliansi;
+            this.dikunjungi = dikunjungi;
+            this.jalur = jalur;
+        }
+    }
+}
