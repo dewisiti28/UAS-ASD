@@ -57,3 +57,28 @@ private static int cariKotaAwal(int n, int c, List<List<Integer>> daftarAliansi)
                 petaAliansiKota.get(kota).add(indeksAliansi);
             }
         }
+        for (int kota = 0; kota < n; kota++) {
+                    for (int aliansi : petaAliansiKota.getOrDefault(kota, new ArrayList<>())) {
+                        if (dapatKunjungiSemuaKota(kota, aliansi, n, petaAliansiKota, graf)) {
+                            return kota;
+                        }
+                    }
+                }
+        
+                return -1;
+            }
+        
+            private static boolean dapatKunjungiSemuaKota(int kotaMulai, int aliansiMulai, int n, Map<Integer, List<Integer>> petaAliansiKota, Map<String, List<String>> graf) {
+                Queue<Node> antrian = new LinkedList<>();
+                antrian.offer(new Node(kotaMulai, aliansiMulai, new HashSet<>(Collections.singleton(kotaMulai)), new ArrayList<>(Collections.singleton(kotaMulai))));
+        
+                while (!antrian.isEmpty()) {
+                    Node node = antrian.poll();
+                    int kotaSekarang = node.kota;
+                    int aliansiSekarang = node.aliansi;
+                    Set<Integer> sudahDikunjungi = node.dikunjungi;
+                    List<Integer> jalur = node.jalur;
+        
+                    if (sudahDikunjungi.size() == n) {
+                        return true;
+                    }
