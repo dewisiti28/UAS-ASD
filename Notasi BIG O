@@ -43,4 +43,15 @@ DEFINE class Tugas
                 FOR j = i + 1 to size of 'aliansi' - 1
                     CREATE keys 'kunci1' and 'kunci2'
                     ADD connections to 'graf' for both 'kunci1' and 'kunci2'
+        FOR each 'indeksAliansi' in 'daftarAliansi'
+            GET 'aliansi' from 'daftarAliansi' at 'indeksAliansi'
+            
+            FOR each 'kota' in 'aliansi'
+                ADD 'indeksAliansi' to 'petaAliansiKota' for 'kota'
         
+        FOR 'kota' = 0 to n - 1
+            FOR each 'aliansi' in 'petaAliansiKota' for 'kota'
+                IF 'dapatKunjungiSemuaKota' with 'kota', 'aliansi', n, 'petaAliansiKota', 'graf'
+                    RETURN 'kota'
+        
+        RETURN -1
