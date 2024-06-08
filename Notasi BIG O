@@ -1,1 +1,33 @@
+START
+IMPORT necessary libraries
 
+DEFINE class Tugas
+
+    METHOD main
+        CREATE Scanner object 'scanner'
+        CREATE List 'hasil' to store results
+
+        WHILE true
+            READ 'jumlahKota' from input
+            READ 'jumlahAliansi' from input
+            
+            IF 'jumlahKota' == 0 AND 'jumlahAliansi' == 0
+                BREAK out of the loop
+
+            CREATE List 'daftarAliansi' to store alliances
+            
+            FOR i = 0 to 'jumlahAliansi' - 1
+                READ 'kotaDalamAliansi' from input
+                CREATE List 'aliansi'
+                
+                FOR j = 0 to 'kotaDalamAliansi' - 1
+                    READ city and ADD to 'aliansi'
+                
+                ADD 'aliansi' to 'daftarAliansi'
+            
+            CALL 'cariKotaAwal' with 'jumlahKota', 'jumlahAliansi', 'daftarAliansi' and ADD result to 'hasil'
+        
+        FOR each 'kota' in 'hasil'
+            PRINT 'kota'
+        
+        CLOSE 'scanner'
