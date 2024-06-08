@@ -54,4 +54,36 @@ DEFINE class Tugas
                 IF 'dapatKunjungiSemuaKota' with 'kota', 'aliansi', n, 'petaAliansiKota', 'graf'
                     RETURN 'kota'
         
-        RETURN -1
+        RETURN -1METHOD 'dapatKunjungiSemuaKota' (int kotaMulai, int aliansiMulai, int n, Map 'petaAliansiKota', Map 'graf') RETURNS boolean
+        CREATE Queue 'antrian'
+        ADD new Node with 'kotaMulai', 'aliansiMulai', and initial visited set and path to 'antrian'
+        
+        WHILE 'antrian' is not empty
+            POLL 'node' from 'antrian'
+            GET 'kotaSekarang', 'aliansiSekarang', 'sudahDikunjungi', 'jalur' from 'node'
+            
+            IF size of 'sudahDikunjungi' == n
+                RETURN true
+            
+            GET 'aliansiSelanjutnya' from 'petaAliansiKota' for 'kotaSekarang'
+            
+            FOR each 'aliansi' in 'aliansiSelanjutnya'
+                IF 'aliansi' is not 'aliansiSekarang' OR size of 'aliansiSelanjutnya' == 1
+                    CREATE 'kunci'
+                    GET 'tetangga' from 'graf' for 'kunci'
+                    
+                    FOR each 'tetanggaStr' in 'tetangga'
+                        PARSE 'kotaTetangga' and 'aliansiTetangga' from 'tetanggaStr'
+                        
+                        IF 'kotaTetangga' not in 'sudahDikunjungi'
+                            CREATE new visited set 'dikunjungiBaru' and add 'kotaTetangga'
+                            CREATE new path 'jalurBaru' and add 'kotaTetangga'
+                            ADD new Node with 'kotaTetangga', 'aliansiTetangga', 'dikunjungiBaru', 'jalurBaru' to 'antrian'
+        
+        RETURN false
+
+    DEFINE class Node
+        CONSTRUCTOR Node (int kota, int aliansi, Set 'dikunjungi', List 'jalur')
+            ASSIGN 'kota', 'aliansi', 'dikunjungi', 'jalur'
+        
+END
