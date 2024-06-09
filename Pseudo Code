@@ -2,90 +2,113 @@ START
 IMPORT necessary libraries
 
 DEFINE class Tugas
+CLASS Graf:
+    PROPERTIES:
+        int jumlahKota
+        Map<Integer, Set<Integer>> aliansiKota
+        Map<String, List<String>> graf
 
-    METHOD main
-        CREATE Scanner object 'scanner'
-        CREATE List 'hasil' to store results
+    CONSTRUCTOR Graf(int jumlahKota):
+        SET this.jumlahKota TO jumlahKota
+        INIT aliansiKota AS new HashMap
+        INIT graf AS new HashMap
 
-        WHILE true
-            READ 'jumlahKota' from input
-            READ 'jumlahAliansi' from input
-            
-            IF 'jumlahKota' == 0 AND 'jumlahAliansi' == 0
-                BREAK out of the loop
+    METHOD tambahAliansi(int warna, List<Integer> kota):
+        FOR each k IN kota:
+            IF k NOT IN aliansiKota:
+                PUT new HashSet() TO aliansiKota WITH key k
+            ADD warna TO aliansiKota[k]
+        FOR i FROM 0 TO kota.size() - 1:
+            FOR j FROM i + 1 TO kota.size():
+                SET kunci1 TO kota.get(i) + "-" + warna
+                SET kunci2 TO kota.get(j) + "-" + warna
+                IF kunci1 NOT IN graf:
+                    PUT new ArrayList() TO graf WITH key kunci1
+                IF kunci2 NOT IN graf:
+                    PUT new ArrayList() TO graf WITH key kunci2
+                ADD kunci2 TO graf[kunci1]
+                ADD kunci1 TO graf[kunci2]
 
-            CREATE List 'daftarAliansi' to store alliances
-            
-            FOR i = 0 to 'jumlahAliansi' - 1
-                READ 'kotaDalamAliansi' from input
-                CREATE List 'aliansi'
-                
-                FOR j = 0 to 'kotaDalamAliansi' - 1
-                    READ city and ADD to 'aliansi'
-                
-                ADD 'aliansi' to 'daftarAliansi'
-            
-            CALL 'cariKotaAwal' with 'jumlahKota', 'jumlahAliansi', 'daftarAliansi' and ADD result to 'hasil'
-        
-        FOR each 'kota' in 'hasil'
-            PRINT 'kota'
-        
-        CLOSE 'scanner'
-
-  DEFINE class Node
-        CONSTRUCTOR Node (int kota, int aliansi, Set 'dikunjungi', List 'jalur')
-            ASSIGN 'kota', 'aliansi', 'dikunjungi', 'jalur'
-
-    METHOD 'cariKotaAwal' (int n, int c, List 'daftarAliansi') RETURNS int
-        CREATE Map 'petaAliansiKota'
-        CREATE Map 'graf'
-        
-        FOR each 'indeksAliansi' in 'daftarAliansi'
-            GET 'aliansi' from 'daftarAliansi' at 'indeksAliansi'
-            
-            FOR i = 0 to size of 'aliansi' - 1
-                FOR j = i + 1 to size of 'aliansi' - 1
-                    CREATE keys 'kunci1' and 'kunci2'
-                    ADD connections to 'graf' for both 'kunci1' and 'kunci2'
-        FOR each 'indeksAliansi' in 'daftarAliansi'
-            GET 'aliansi' from 'daftarAliansi' at 'indeksAliansi'
-            
-            FOR each 'kota' in 'aliansi'
-                ADD 'indeksAliansi' to 'petaAliansiKota' for 'kota'
-        
-        FOR 'kota' = 0 to n - 1
-            FOR each 'aliansi' in 'petaAliansiKota' for 'kota'
-                IF 'dapatKunjungiSemuaKota' with 'kota', 'aliansi', n, 'petaAliansiKota', 'graf'
-                    RETURN 'kota'
-        
-        RETURN -1METHOD 'dapatKunjungiSemuaKota' (int kotaMulai, int aliansiMulai, int n, Map 'petaAliansiKota', Map 'graf') RETURNS boolean
-        CREATE Queue 'antrian'
-        ADD new Node with 'kotaMulai', 'aliansiMulai', and initial visited set and path to 'antrian'
-        
-        WHILE 'antrian' is not empty
-            POLL 'node' from 'antrian'
-            GET 'kotaSekarang', 'aliansiSekarang', 'sudahDikunjungi', 'jalur' from 'node'
-            
-            IF size of 'sudahDikunjungi' == n
+    METHOD boolean dapatMengunjungiSemuaKotaDari(int kotaMulai):
+        SET tiketAwal TO aliansiKota.get(kotaMulai)
+        IF tiketAwal IS null:
+            RETURN false
+        FOR each tiket IN tiketAwal:
+            INIT dikunjungi AS new HashSet
+            IF bfs(kotaMulai, tiket, dikunjungi) == jumlahKota:
                 RETURN true
-            
-            GET 'aliansiSelanjutnya' from 'petaAliansiKota' for 'kotaSekarang'
-            
-            FOR each 'aliansi' in 'aliansiSelanjutnya'
-                IF 'aliansi' is not 'aliansiSekarang' OR size of 'aliansiSelanjutnya' == 1
-                    CREATE 'kunci'
-                    GET 'tetangga' from 'graf' for 'kunci'
-                    
-                    FOR each 'tetanggaStr' in 'tetangga'
-                        PARSE 'kotaTetangga' and 'aliansiTetangga' from 'tetanggaStr'
-                        
-                        IF 'kotaTetangga' not in 'sudahDikunjungi'
-                            CREATE new visited set 'dikunjungiBaru' and add 'kotaTetangga'
-                            CREATE new path 'jalurBaru' and add 'kotaTetangga'
-                            ADD new Node with 'kotaTetangga', 'aliansiTetangga', 'dikunjungiBaru', 'jalurBaru' to 'antrian'
-        
         RETURN false
 
-  
-        
+    METHOD int bfs(int kotaMulai, int aliansiMulai, Set<Integer> dikunjungi):
+        INIT antrian AS new LinkedList
+        OFFER new Node(kotaMulai, aliansiMulai, new HashSet(Arrays.asList(kotaMulai))) TO antrian
+
+        WHILE antrian IS NOT empty:
+            POLL node FROM antrian
+            SET kotaSaatIni TO node.kota
+            SET aliansiSaatIni TO node.aliansi
+            SET dikunjungiSaatIni TO node.dikunjungi
+
+            IF dikunjungiSaatIni.size() == jumlahKota:
+                RETURN dikunjungiSaatIni.size()
+
+            INIT aliansiBerikutnyaList AS new ArrayList(aliansiKota.getOrDefault(kotaSaatIni, new HashSet()))
+            FOR each aliansiBerikutnya IN aliansiBerikutnyaList:
+                IF aliansiBerikutnya != aliansiSaatIni OR aliansiBerikutnyaList.size() == 1:
+                    SET kunci TO kotaSaatIni + "-" + aliansiBerikutnya
+                    SET tetangga TO graf.getOrDefault(kunci, new ArrayList())
+                    FOR each tetanggaStr IN tetangga:
+                        SET kotaTetangga TO Integer.parseInt(tetanggaStr.split("-")[0])
+                        SET aliansiTetangga TO Integer.parseInt(tetanggaStr.split("-")[1])
+                        IF kotaTetangga NOT IN dikunjungiSaatIni:
+                            INIT baruDikunjungi AS new HashSet(dikunjungiSaatIni)
+                            ADD kotaTetangga TO baruDikunjungi
+                            OFFER new Node(kotaTetangga, aliansiTetangga, baruDikunjungi) TO antrian
+
+        RETURN dikunjungi.size()
+
+    CLASS Node:
+        PROPERTIES:
+            int kota
+            int aliansi
+            Set<Integer> dikunjungi
+
+        CONSTRUCTOR Node(int kota, int aliansi, Set<Integer> dikunjungi):
+            SET this.kota TO kota
+            SET this.aliansi TO aliansi
+            SET this.dikunjungi TO dikunjungi
+
+MAIN:
+    INIT pemindai AS new Scanner(System.in)
+    INIT hasil AS new ArrayList
+
+    WHILE true:
+        READ jumlahKota FROM pemindai
+        READ jumlahAliansi FROM pemindai
+        IF jumlahKota == 0 AND jumlahAliansi == 0:
+            BREAK
+
+        INIT graf AS new Graf(jumlahKota)
+
+        FOR i FROM 0 TO jumlahAliansi - 1:
+            READ jumlahKotaDalamAliansi FROM pemindai
+            INIT kota AS new ArrayList
+            FOR j FROM 0 TO jumlahKotaDalamAliansi - 1:
+                READ k FROM pemindai
+                ADD k TO kota
+            CALL graf.tambahAliansi(i, kota)
+
+        SET kotaMulai TO -1
+        FOR i FROM 0 TO jumlahKota - 1:
+            IF graf.dapatMengunjungiSemuaKotaDari(i):
+                SET kotaMulai TO i
+                BREAK
+
+        ADD kotaMulai TO hasil
+
+    FOR each result IN hasil:
+        PRINT result
+
+    CALL pemindai.close()
+ 
 END
