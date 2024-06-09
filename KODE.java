@@ -1,60 +1,27 @@
 import java.util.*;
 import java.util.LinkedList;
+public class uasSem2 {
 
-public class Tugas {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        List<Integer> hasil = new ArrayList<>();
+    static class Graf {
+        int jumlahKota;
+        Map<Integer, Set<Integer>> aliansiKota;
+        Map<String, List<String>> graf;
 
-        while (true) {
-            int jumlahKota = scanner.nextInt();
-            int jumlahAliansi = scanner.nextInt();
-            if (jumlahKota == 0 && jumlahAliansi == 0) {
-                break;
+        Graf(int jumlahKota) {
+            this.jumlahKota = jumlahKota;
+            aliansiKota = new HashMap<>();
+            graf = new HashMap<>();
+        }
+
+        void tambahAliansi(int warna, List<Integer> kota) {
+            for (int k : kota) {
+                aliansiKota.putIfAbsent(k, new HashSet<>());
+                aliansiKota.get(k).add(warna);
             }
-
-            List<List<Integer>> daftarAliansi = new ArrayList<>();
-            for (int i = 0; i < jumlahAliansi; i++) {
-                int kotaDalamAliansi = scanner.nextInt();
-                List<Integer> aliansi = new ArrayList<>();
-                for (int j = 0; j < kotaDalamAliansi; j++) {
-                    aliansi.add(scanner.nextInt());
-                }
-                daftarAliansi.add(aliansi);
-            }
-
-            int kotaAwal = cariKotaAwal(jumlahKota, jumlahAliansi, daftarAliansi);
-            hasil.add(kotaAwal);
-        }
-
-        for (int kota : hasil) {
-            System.out.println(kota);
-        }
-        scanner.close();
-    }
-    static class Node {
-        int kota;
-        int aliansi;
-        Set<Integer> dikunjungi;
-        List<Integer> jalur;
-
-        Node(int kota, int aliansi, Set<Integer> dikunjungi, List<Integer> jalur) {
-            this.kota = kota;
-            this.aliansi = aliansi;
-            this.dikunjungi = dikunjungi;
-            this.jalur = jalur;
-        }
-    }
-private static int cariKotaAwal(int n, int c, List<List<Integer>> daftarAliansi) {
-        Map<Integer, List<Integer>> petaAliansiKota = new HashMap<>();
-        Map<String, List<String>> graf = new HashMap<>();
-        
-        for (int indeksAliansi = 0; indeksAliansi < daftarAliansi.size(); indeksAliansi++) {
-            List<Integer> aliansi = daftarAliansi.get(indeksAliansi);
-            for (int i = 0; i < aliansi.size(); i++) {
-                for (int j = i + 1; j < aliansi.size(); j++) {
-                    String kunci1 = aliansi.get(i) + "-" + indeksAliansi;
-                    String kunci2 = aliansi.get(j) + "-" + indeksAliansi;
+            for (int i = 0; i < kota.size(); i++) {
+                for (int j = i + 1; j < kota.size(); j++) {
+                    String kunci1 = kota.get(i) + "-" + warna;
+                    String kunci2 = kota.get(j) + "-" + warna;
                     graf.putIfAbsent(kunci1, new ArrayList<>());
                     graf.putIfAbsent(kunci2, new ArrayList<>());
                     graf.get(kunci1).add(kunci2);
@@ -62,62 +29,101 @@ private static int cariKotaAwal(int n, int c, List<List<Integer>> daftarAliansi)
                 }
             }
         }
-        
-        for (int indeksAliansi = 0; indeksAliansi < daftarAliansi.size(); indeksAliansi++) {
-            List<Integer> aliansi = daftarAliansi.get(indeksAliansi);
-            for (int kota : aliansi) {
-                petaAliansiKota.putIfAbsent(kota, new ArrayList<>());
-                petaAliansiKota.get(kota).add(indeksAliansi);
-            }
-        }
-        for (int kota = 0; kota < n; kota++) {
-                    for (int aliansi : petaAliansiKota.getOrDefault(kota, new ArrayList<>())) {
-                        if (dapatKunjungiSemuaKota(kota, aliansi, n, petaAliansiKota, graf)) {
-                            return kota;
-                        }
-                    }
-                }
-        
-                return -1;
-            }
-        
-            private static boolean dapatKunjungiSemuaKota(int kotaMulai, int aliansiMulai, int n, Map<Integer, List<Integer>> petaAliansiKota, Map<String, List<String>> graf) {
-                Queue<Node> antrian = new LinkedList<>();
-                antrian.offer(new Node(kotaMulai, aliansiMulai, new HashSet<>(Collections.singleton(kotaMulai)), new ArrayList<>(Collections.singleton(kotaMulai))));
-        
-                while (!antrian.isEmpty()) {
-                    Node node = antrian.poll();
-                    int kotaSekarang = node.kota;
-                    int aliansiSekarang = node.aliansi;
-                    Set<Integer> sudahDikunjungi = node.dikunjungi;
-                    List<Integer> jalur = node.jalur;
-        
-                    if (sudahDikunjungi.size() == n) {
-                        return true;
-                    }
 
-                List<Integer> aliansiSelanjutnya = petaAliansiKota.getOrDefault(kotaSekarang, new ArrayList<>());
-            for (int aliansi : aliansiSelanjutnya) {
-                if (aliansi != aliansiSekarang || aliansiSelanjutnya.size() == 1) {
-                    String kunci = kotaSekarang + "-" + aliansi;
-                    List<String> tetangga = graf.getOrDefault(kunci, new ArrayList<>());
-                    for (String tetanggaStr : tetangga) {
-                        int kotaTetangga = Integer.parseInt(tetanggaStr.split("-")[0]);
-                        int aliansiTetangga = Integer.parseInt(tetanggaStr.split("-")[1]);
-                        if (!sudahDikunjungi.contains(kotaTetangga)) {
-                            Set<Integer> dikunjungiBaru = new HashSet<>(sudahDikunjungi);
-                            dikunjungiBaru.add(kotaTetangga);
-                            List<Integer> jalurBaru = new ArrayList<>(jalur);
-                            jalurBaru.add(kotaTetangga);
-                            antrian.offer(new Node(kotaTetangga, aliansiTetangga, dikunjungiBaru, jalurBaru));
+        boolean dapatMengunjungiSemuaKotaDari(int kotaMulai) {
+            Set<Integer> tiketAwal = aliansiKota.get(kotaMulai);
+            if (tiketAwal == null) return false;
+
+            for (int tiket : tiketAwal) {
+                Set<Integer> dikunjungi = new HashSet<>();
+                if (bfs(kotaMulai, tiket, dikunjungi) == jumlahKota) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private int bfs(int kotaMulai, int aliansiMulai, Set<Integer> dikunjungi) {
+            Queue<Node> antrian = new LinkedList<>();
+            antrian.offer(new Node(kotaMulai, aliansiMulai, new HashSet<>(Collections.singleton(kotaMulai))));
+
+            while (!antrian.isEmpty()) {
+                Node node = antrian.poll();
+                int kotaSaatIni = node.kota;
+                int aliansiSaatIni = node.aliansi;
+                Set<Integer> dikunjungiSaatIni = node.dikunjungi;
+
+                if (dikunjungiSaatIni.size() == jumlahKota) {
+                    return dikunjungiSaatIni.size();
+                }
+
+                List<Integer> aliansiBerikutnyaList = new ArrayList<>(aliansiKota.getOrDefault(kotaSaatIni, new HashSet<>()));
+                for (int aliansiBerikutnya : aliansiBerikutnyaList) {
+                    if (aliansiBerikutnya != aliansiSaatIni || aliansiBerikutnyaList.size() == 1) {
+                        String kunci = kotaSaatIni + "-" + aliansiBerikutnya;
+                        List<String> tetangga = graf.getOrDefault(kunci, new ArrayList<>());
+                        for (String tetanggaStr : tetangga) {
+                            int kotaTetangga = Integer.parseInt(tetanggaStr.split("-")[0]);
+                            int aliansiTetangga = Integer.parseInt(tetanggaStr.split("-")[1]);
+                            if (!dikunjungiSaatIni.contains(kotaTetangga)) {
+                                Set<Integer> baruDikunjungi = new HashSet<>(dikunjungiSaatIni);
+                                baruDikunjungi.add(kotaTetangga);
+                                antrian.offer(new Node(kotaTetangga, aliansiTetangga, baruDikunjungi));
+                            }
                         }
                     }
                 }
             }
+            return dikunjungi.size();
         }
 
-        return false;
+        static class Node {
+            int kota;
+            int aliansi;
+            Set<Integer> dikunjungi;
+
+            Node(int kota, int aliansi, Set<Integer> dikunjungi) {
+                this.kota = kota;
+                this.aliansi = aliansi;
+                this.dikunjungi = dikunjungi;
+            }
+        }
     }
 
-    
+    public static void main(String[] args) {
+        Scanner pemindai = new Scanner(System.in);
+        List<Integer> hasil = new ArrayList<>();
+
+        while (true) {
+            int jumlahKota = pemindai.nextInt();
+            int jumlahAliansi = pemindai.nextInt();
+            if (jumlahKota == 0 && jumlahAliansi == 0) break;
+
+            Graf graf = new Graf(jumlahKota);
+
+            for (int i = 0; i < jumlahAliansi; i++) {
+                int jumlahKotaDalamAliansi = pemindai.nextInt();
+                List<Integer> kota = new ArrayList<>();
+                for (int j = 0; j < jumlahKotaDalamAliansi; j++) {
+                    kota.add(pemindai.nextInt());
+                }
+                graf.tambahAliansi(i, kota);
+            }
+
+            int kotaMulai = -1;
+            for (int i = 0; i < jumlahKota; i++) {
+                if (graf.dapatMengunjungiSemuaKotaDari(i)) {
+                    kotaMulai = i;
+                    break;
+                }
+            }
+
+            hasil.add(kotaMulai);
+        }
+
+        for (int result : hasil) {
+            System.out.println(result);
+        }
+        pemindai.close();
+    }
 }
