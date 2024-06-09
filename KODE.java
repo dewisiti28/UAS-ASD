@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.LinkedList;
 
-public class UAS {
+public class Tugas {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<Integer> hasil = new ArrayList<>();
@@ -31,6 +31,19 @@ public class UAS {
             System.out.println(kota);
         }
         scanner.close();
+    }
+    static class Node {
+        int kota;
+        int aliansi;
+        Set<Integer> dikunjungi;
+        List<Integer> jalur;
+
+        Node(int kota, int aliansi, Set<Integer> dikunjungi, List<Integer> jalur) {
+            this.kota = kota;
+            this.aliansi = aliansi;
+            this.dikunjungi = dikunjungi;
+            this.jalur = jalur;
+        }
     }
 private static int cariKotaAwal(int n, int c, List<List<Integer>> daftarAliansi) {
         Map<Integer, List<Integer>> petaAliansiKota = new HashMap<>();
@@ -106,17 +119,5 @@ private static int cariKotaAwal(int n, int c, List<List<Integer>> daftarAliansi)
         return false;
     }
 
-    static class Node {
-        int kota;
-        int aliansi;
-        Set<Integer> dikunjungi;
-        List<Integer> jalur;
-
-        Node(int kota, int aliansi, Set<Integer> dikunjungi, List<Integer> jalur) {
-            this.kota = kota;
-            this.aliansi = aliansi;
-            this.dikunjungi = dikunjungi;
-            this.jalur = jalur;
-        }
-    }
+    
 }
