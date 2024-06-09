@@ -32,6 +32,10 @@ DEFINE class Tugas
         
         CLOSE 'scanner'
 
+  DEFINE class Node
+        CONSTRUCTOR Node (int kota, int aliansi, Set 'dikunjungi', List 'jalur')
+            ASSIGN 'kota', 'aliansi', 'dikunjungi', 'jalur'
+
     METHOD 'cariKotaAwal' (int n, int c, List 'daftarAliansi') RETURNS int
         CREATE Map 'petaAliansiKota'
         CREATE Map 'graf'
@@ -82,8 +86,6 @@ DEFINE class Tugas
         
         RETURN false
 
-    DEFINE class Node
-        CONSTRUCTOR Node (int kota, int aliansi, Set 'dikunjungi', List 'jalur')
-            ASSIGN 'kota', 'aliansi', 'dikunjungi', 'jalur'
+  
         
 END
