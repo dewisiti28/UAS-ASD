@@ -5,7 +5,7 @@ Creator  :
 |-------|-------|
 |Abdul Rafi|2300062|
 |Alfarizi Khoerul Rizal|2309650|
-|Danish Zaidan Ahmad |2308270|
+|Danish Zaidan Kamil |2308270|
 |Dewi Siti Jamilah|2300707|
 
 
